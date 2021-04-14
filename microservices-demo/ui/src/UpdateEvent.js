@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { Form, Card,Button } from 'react-bootstrap';
 
-class CreateEvent extends React.Component {
+class UpdateEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            role: 'admin',
+            presenter: 'admin',
             id: '',
             title: '',
             description: ''
         };
-
+        
         this.handleChangeID = this.handleChangeID.bind(this);
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
-        this.handleChangeRole = this.handleChangeRole.bind(this);
+        this.handleChangePresenter = this.handleChangePresenter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -34,22 +34,24 @@ class CreateEvent extends React.Component {
             description: event.target.value
         });
     }
-    handleChangeRole(event) {
+    handleChangePresenter(event) {
         this.setState({
-            role: event.target.value
+            presenter: event.target.value
         });
     }
 
     handleSubmit(event) {
+        var eventId = 1
 
-        fetch('/events', {
-            method: 'POST',
-            body: JSON.stringify(this.state)
+        fetch(`/events`, {
+            method: 'PATCH',
+            body: JSON.stringify(this.state),
+            eventId: JSON.stringify(this.state.id)
         }).then(function (response) {
             console.log(response)
             if (response.status == 201 || response.status == 200)  {
-                alert('A form was successfully submitted');
-            } else if (response.status == 403){
+                alert('The Event was successfully updated');
+            } else if (response.status == 401){
                 alert('Unauthorized');
             } else {
                 alert('Internal error');
@@ -75,7 +77,7 @@ class CreateEvent extends React.Component {
                 <Card>
                     <Card.Body>
                         <Form onSubmit={this.handleSubmit}>
-                        <Form.Group controlId="exampleForm.ControlSelect1">
+                            <Form.Group controlId="exampleForm.ControlSelect1">
                                 <Form.Label>Select Presenter</Form.Label>
                                 <Form.Control as="select" value={this.state.presenter} onChange={this.handleChangePresenter}>
                                     <option value="Sahil">Sahil</option>
@@ -83,6 +85,11 @@ class CreateEvent extends React.Component {
                                     <option value="Tayyab">Tayyab</option>
                                     <option value="Anonymous">Anonymous</option>
                                 </Form.Control>
+                            </Form.Group>
+                            <Form.Group controlId="exampleForm.ControlInput1">
+                                <Form.Label>ID</Form.Label>
+                                <Form.Control type="text" placeholder="123"
+                                    value={this.state.id} onChange={this.handleChangeID} />
                             </Form.Group>
                             <Form.Group controlId="exampleForm.ControlInput2">
                                 <Form.Label>Title</Form.Label>
@@ -107,4 +114,4 @@ class CreateEvent extends React.Component {
     }
 }
 
-export default CreateEvent;
+export default UpdateEvent;
