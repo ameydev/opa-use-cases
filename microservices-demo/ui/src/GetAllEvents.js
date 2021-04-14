@@ -21,6 +21,7 @@ class GetAllEvents extends React.Component {
             .catch(console.log)
 
     }
+    
 
 
     render() {
@@ -28,14 +29,15 @@ class GetAllEvents extends React.Component {
         return (
 
             <div>
-                <center><h1>Event List</h1></center>
+                <center><h1>Infranauts Meetup Events</h1></center>
 
                 <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Title</th>
-                            <th>Description</th>
+                            <th>Presentor</th>
+                            <th>Update</th>
                           
                         </tr>
                     </thead>
@@ -44,8 +46,8 @@ class GetAllEvents extends React.Component {
                             <tr key={index}>
                                 <td>{eventDa.ID}</td>
                                 <td>{eventDa.Title}</td>
-                                <td>{eventDa.Description}</td>
-                                
+                                <td>{eventDa.Presentor}</td>
+                                <td><button name="Update" onClick={() => this.updateEvents(id)}/></td>
                             </tr>
 
                         ))}
